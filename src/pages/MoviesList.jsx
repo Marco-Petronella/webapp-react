@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 
 
 export default function MoviesList() {
@@ -17,11 +18,12 @@ export default function MoviesList() {
             {movies.map((movie) => (
                 <li key={movie.id} className='col-3'>
                     <div className='card'>
-                        <img src={movie.image} className='card-img-top' alt={movie.title} />
+                        <img src={`/src/assets/images/${movie.image}`} className='card-img-top' alt={movie.title} />
                         <div className='card-body'>
                             <h5 className='card-title'>{movie.title}</h5>
                             <p className='card-text'>{movie.director} {movie.release_year}</p>
                             <p className='card-text'>{movie.abstract}</p>
+                            <NavLink to={`/movies/${movie.id}`} className='btn btn-primary'>Details</NavLink>
                         </div>
                     </div>
                 </li>
