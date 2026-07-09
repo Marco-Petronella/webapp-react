@@ -20,28 +20,21 @@ export default function MovieDetails() {
       <h1>Movie Details</h1>
       {movie ? (
         <>
-          <h2>{movie[0].title}</h2>
-          <img src={`/src/assets/images/${movie[0].image}`} alt={movie[0].title} />
-          <p>{movie[0].director}</p>
-          <p>{movie[0].year}</p>
-          <p>{movie[0].abstract}</p>
+          <h2>{movie[0]?.title}</h2>
+          <img src={`/src/assets/images/${movie[0]?.image}`} alt={movie[0]?.title} />
+          <p>{movie[0]?.director}</p>
+          <p>{movie[0]?.year}</p>
+          <p>{movie[0]?.abstract}</p>
 
           <h3>Reviews</h3>
           {movie.map((review) => (
-            <div class="card" style="width:18rem;">
-              <img src="https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-muted ">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                b5
+            <div className="card" key={review.id}>
+              <div className="card-body">
+                <h5 className="card-title">Revies by: {review.name}</h5>
+                <h6 className="card-subtitle mb-2 text-muted ">{review.vote}</h6>
+                <p className="card-text">{review.text}</p>
               </div>
             </div>
-            // <div key={review.id}>
-            //   <p>{review.name}</p>
-            //     <p>{review.text}</p>
-            //     <p>Rating: {review.vote}</p>
-            //     </div>
           ))}
         </>
       ) : (
