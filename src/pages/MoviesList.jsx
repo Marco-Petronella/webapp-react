@@ -7,8 +7,12 @@ import "ldrs/react/Infinity.css";
 
 export default function MoviesList() {
     const [movies, setMovies] = useState([])
-    const { loader, setLoader } = useContext(GlobalLoaderContext);
+    const {loader, setLoader } = useContext(GlobalLoaderContext);
+    const [loadedImages, setLoadedImages] = useState([])
 
+    const handleImageLoad = (id) => {
+        setLoadedImages(prev => [...prev, id])
+    }
 
     useEffect(() => {
         fetch('http://localhost:3000/v1/movies')
@@ -17,14 +21,33 @@ export default function MoviesList() {
     }, [])
 
     return (
-    <main>
-        <h1> movies list </h1>
-        <ul className='row g-2 unstyled-list'> 
+    <main className='movies-catalog'>
+        <h1>🎬 Movies</h1>
+        <ul className='row g-4 list-unstyled'> 
             {movies ? (
             movies.map((movie) => (
-                <li key={movie.id} className='col-3'>
-                    <div className='card'>
-                        <img src={`/src/assets/images/${movie.image}`} className='card-img-top' alt={movie.title} />
+                <li key={movie.id} className='col-12 col-md-6 col-lg-3'>
+                    <div className='card card-movie'>
+                         <div className="image-container">
+                                {loader && !loadedImages.includes(movie.id) && (
+                                    <div className="d-flex justify-content-center align-items-center">
+                                        <Infinity
+                                            size="55"
+                                            stroke="4"
+                                            strokeLength="0.15"
+                                            bgOpacity="0.1"
+                                            speed="1.3"
+                                            color="black"
+                                        />
+                                    </div>
+                                )}
+                                <img
+                                    src={`/src/assets/images/${movie.image}`}
+                                    className={`card-img-top ${loadedImages.includes(movie.id) ? '' : 'd-none'}`}
+                                    alt={movie.title}
+                                    onLoad={() => handleImageLoad(movie.id)}
+                                />
+                            </div>
                         <div className='card-body'>
                             <h5 className='card-title'>{movie.title}</h5>
                             <p className='card-text'>{movie.director} {movie.release_year}</p>
@@ -51,4 +74,5 @@ export default function MoviesList() {
     </main>
     )
 }
+
 

@@ -6,6 +6,7 @@ import "ldrs/react/Infinity.css";
 
 export default function MovieDetails() {
   const { loader, setLoader } = useContext(GlobalLoaderContext);
+  const [loadedImage, setLoadedImage] = useState(false);
   const [movie, setMovie] = useState([]);
   const id = useParams().id;
   const [reviews, setReviews] = useState([]);
@@ -42,7 +43,7 @@ export default function MovieDetails() {
       },
       body: JSON.stringify(formData),
     });
-    setFormSubmitted(!formSubmitted);
+    setFormSubmitted(prev => !prev)
     resetFormData();
   }
 
@@ -61,38 +62,68 @@ export default function MovieDetails() {
       .then((result) => {
         setMovie(result);
         console.log(result);
-      })
+      });
   }, [formSubmitted]);
 
   return (
     <main>
       <h1>Movie Details</h1>
+
       {movie ? (
         <>
-          <h2>{movie[0]?.title}</h2>
-          <img
-            className="poster"
-            src={`/src/assets/images/${movie[0]?.image}`}
-            alt={movie[0]?.title}
-          />
-          <p>{movie[0]?.director}</p>
-          <p>{movie[0]?.year}</p>
-          <p>{movie[0]?.abstract}</p>
-
-          <h3>Reviews</h3>
-          <div className="d-flex flex-wrap">
-            {movie.map((review) => (
-              <div className="card col-4" key={review.id}>
-                <div className="card-body">
-                  <h5 className="card-title">Reviews by: {review.name}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted ">
-                    {drawStars(review.vote)}
-                  </h6>
-                  <p className="card-text">{review.text}</p>
+          <section className="movie-info-section">
+            <div className="poster-container">
+              {loader && !loadedImage && (
+                <div className="d-flex justify-content-center align-items-center">
+                  <Infinity
+                    size="55"
+                    stroke="4"
+                    strokeLength="0.15"
+                    bgOpacity="0.1"
+                    speed="1.3"
+                    color="black"
+                  />
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+
+              <img
+                className="poster"
+                src={`/src/assets/images/${movie[0]?.image}`}
+                alt={movie.title}
+                onLoad={() => setLoadedImage(true)}
+              />
+            </div>
+
+            <div className="movie-detail-section">
+
+              <h2>{movie[0]?.title}</h2>
+              <p><strong>Director: </strong>{movie[0]?.director}</p>
+              <p><strong>Release Year: </strong>{movie[0]?.release_year}</p>
+              <p>{movie[0]?.abstract}</p>
+            
+            </div>
+          
+          </section>
+
+          <section className="reviews-section">
+            <h3>Reviews</h3>
+
+            <div className="reviews-list d-flex flex-wrap gap-4 justify-content-center">
+              {movie.map((review) => (
+                <div className="review-card card col-3" key={review.id}>
+                  <div className="card-body">
+                    <h5 className="card-title">Reviews by: {review.name}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted ">
+
+                      {drawStars(review.vote)}
+
+                    </h6>
+                    <p className="card-text">{review.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </>
       ) : loader ? (
         <Infinity
@@ -106,6 +137,8 @@ export default function MovieDetails() {
       ) : (
         <p>caricamento in corso</p>
       )}
+
+
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
