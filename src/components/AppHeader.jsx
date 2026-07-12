@@ -4,7 +4,7 @@ export default function AppHeader() {
     const menu_items = [
         {name: "Home", path: "/"},
         {name: "Movie List", path: "/movies"},
-        {name: "Movie Details", path: "/movies/:id"},
+        {name: "Movie Details", path: "/movies/1"},
     ];
     return (
         <header>

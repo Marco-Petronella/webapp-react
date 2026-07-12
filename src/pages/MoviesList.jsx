@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import GlobalLoaderContext from "../assets/context/GlobalLoaderContext";
+import { Infinity } from "ldrs/react";
+import "ldrs/react/Infinity.css";
 
 
 export default function MoviesList() {
     const [movies, setMovies] = useState([])
+    const { loader, setLoader } = useContext(GlobalLoaderContext);
+
 
     useEffect(() => {
         fetch('http://localhost:3000/v1/movies')
@@ -15,7 +20,8 @@ export default function MoviesList() {
     <main>
         <h1> movies list </h1>
         <ul className='row g-2 unstyled-list'> 
-            {movies.map((movie) => (
+            {movies ? (
+            movies.map((movie) => (
                 <li key={movie.id} className='col-3'>
                     <div className='card'>
                         <img src={`/src/assets/images/${movie.image}`} className='card-img-top' alt={movie.title} />
@@ -27,7 +33,19 @@ export default function MoviesList() {
                         </div>
                     </div>
                 </li>
-            ))}
+            ))
+        ) : loader ? (
+        <Infinity
+          size="55"
+          stroke="4"
+          strokeLength="0.15"
+          bgOpacity="0.1"
+          speed="1.3"
+          color="black"
+        />
+      ) : (
+        <p>caricamento in corso</p>
+      )}
             
         </ul>
     </main>

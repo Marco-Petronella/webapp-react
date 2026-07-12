@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import GlobalLoaderContext from "../assets/context/GlobalLoaderContext";
+import { Infinity } from "ldrs/react";
+import "ldrs/react/Infinity.css";
 
 export default function MovieDetails() {
+  const { loader, setLoader } = useContext(GlobalLoaderContext);
   const [movie, setMovie] = useState([]);
   const id = useParams().id;
   const [reviews, setReviews] = useState([]);
@@ -45,8 +49,8 @@ export default function MovieDetails() {
   function drawStars(vote) {
     const stars = [];
     for (let i = 0; i <= 5; i++) {
-          if (i < vote) stars.push(<i key={i} className="bi bi-star-fill"></i>);
-          else stars.push(<i key={i} className="bi bi-star"></i>);
+      if (i < vote) stars.push(<i key={i} className="bi bi-star-fill"></i>);
+      else stars.push(<i key={i} className="bi bi-star"></i>);
     }
     return stars;
   }
@@ -57,7 +61,7 @@ export default function MovieDetails() {
       .then((result) => {
         setMovie(result);
         console.log(result);
-      });
+      })
   }, [formSubmitted]);
 
   return (
@@ -76,20 +80,31 @@ export default function MovieDetails() {
           <p>{movie[0]?.abstract}</p>
 
           <h3>Reviews</h3>
-          {movie.map((review) => (
-            <div className="card" key={review.id}>
-              <div className="card-body">
-                <h5 className="card-title">Revies by: {review.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted ">
-                  {drawStars(review.vote)}
-                </h6>
-                <p className="card-text">{review.text}</p>
+          <div className="d-flex flex-wrap">
+            {movie.map((review) => (
+              <div className="card col-4" key={review.id}>
+                <div className="card-body">
+                  <h5 className="card-title">Reviews by: {review.name}</h5>
+                  <h6 className="card-subtitle mb-2 text-muted ">
+                    {drawStars(review.vote)}
+                  </h6>
+                  <p className="card-text">{review.text}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </>
+      ) : loader ? (
+        <Infinity
+          size="55"
+          stroke="4"
+          strokeLength="0.15"
+          bgOpacity="0.1"
+          speed="1.3"
+          color="black"
+        />
       ) : (
-        <p>Loading...</p>
+        <p>caricamento in corso</p>
       )}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
