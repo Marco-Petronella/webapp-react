@@ -63,7 +63,6 @@ export default function MovieDetails() {
       .then((response) => response.json())
       .then((result) => {
         setMovie(result);
-        console.log(result);
       });
   }, [id, formSubmitted]);
 

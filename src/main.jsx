@@ -8,7 +8,7 @@ import GlobalLoaderProvider from './components/GlobalLoaderProvider.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <GlobalLoaderProvider>
-    <App />
+      <App />
     </GlobalLoaderProvider>
   </StrictMode>,
 )
