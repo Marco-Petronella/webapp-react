@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import GlobalLoaderContext from "../assets/context/GlobalLoaderContext";
 import { Infinity } from "ldrs/react";
 import "ldrs/react/Infinity.css";
@@ -8,7 +8,9 @@ export default function MovieDetails() {
   const { loader, setLoader } = useContext(GlobalLoaderContext);
   const [loadedImage, setLoadedImage] = useState(false);
   const [movie, setMovie] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
   const id = useParams().id;
+  const currentId = Number(id);
   const [reviews, setReviews] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -63,7 +65,17 @@ export default function MovieDetails() {
         setMovie(result);
         console.log(result);
       });
-  }, [formSubmitted]);
+  }, [id, formSubmitted]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/v1/movies")
+      .then((response) => response.json())
+      .then((result) => {
+        setAllMovies(result);
+      });
+  }, []);
+
+  const hasNextMovie = allMovies.some((movieItem) => Number(movieItem.id) === currentId + 1);
 
   return (
     <main>
@@ -104,7 +116,14 @@ export default function MovieDetails() {
             </div>
           
           </section>
-
+          <div className="navigation-buttons d-flex flex-wrap justify-content-around">
+            {currentId > 1 && (
+              <NavLink to={`/movies/${currentId - 1}`} className="btn btn-primary">Previous Film</NavLink>
+            )}
+            {hasNextMovie && (
+              <NavLink to={`/movies/${currentId + 1}`} className="btn btn-primary">Next Film</NavLink>
+            )}
+          </div>
           <section className="reviews-section">
             <h3>Reviews</h3>
 

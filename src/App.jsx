@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Home from './pages/Home.jsx'
+import Error from './pages/Error.jsx'
 import MoviesList from './pages/MoviesList.jsx'
 import MovieDetails from './pages/MovieDetails.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -16,6 +16,7 @@ function App() {
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<MoviesList />} />
           <Route path="/movies/:id" element={<MovieDetails />} />
+          <Route path="/*" element={<Error />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -52,7 +52,7 @@ export default function MoviesList() {
                             <h5 className='card-title'>{movie.title}</h5>
                             <p className='card-text'>{movie.director} {movie.release_year}</p>
                             <p className='card-text'>{movie.abstract}</p>
-                            <NavLink to={`/movies/${movie.id}`} className='btn btn-primary'>Details</NavLink>
+                            <NavLink to={`/movies/${movie.id}`} className='btn btn-primary btn-fill'>Details</NavLink>
                         </div>
                     </div>
                 </li>

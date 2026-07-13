@@ -26,6 +26,9 @@ export default function AppHeader() {
                 className={`header-button-${loader ? "on" : "off"}`}
                 onClick={() => setLoader(!loader)}>Loader {loader ? ('on') : ('off')} </button>
             </nav>
+            <div>
+                <img  className="jumbotron" src="/src/assets/images/logo.jpg" alt="jumbotron" />
+            </div>
         </header>
     );
 }
